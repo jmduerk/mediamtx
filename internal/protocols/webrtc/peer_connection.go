@@ -22,7 +22,7 @@ import (
 )
 
 const (
-	webrtcStreamID = "mediamtx"
+	webrtcStreamID = "ntstream"
 )
 
 func interfaceIPs(interfaceList []string) ([]string, error) {

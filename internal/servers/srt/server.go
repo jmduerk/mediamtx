@@ -108,6 +108,7 @@ func (s *Server) Initialize() error {
 	conf := srt.DefaultConfig()
 	conf.ConnectionTimeout = time.Duration(s.ReadTimeout)
 	conf.PeerIdleTimeout = time.Duration(s.ReadTimeout)
+	conf.AllowPeerIpChange = true
 	conf.PayloadSize = uint32(srtMaxPayloadSize(s.UDPMaxPayloadSize))
 
 	var err error
