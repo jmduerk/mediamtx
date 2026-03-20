@@ -82,7 +82,7 @@ func checkMP4MagicBytes(f io.ReadSeeker) error {
 	}
 
 	if !bytes.Equal(magicBytes, []byte("ftyp")) {
-		return fmt.Errorf("file is not MP4, magic bytes are '%v'", magicBytes)
+		return fmt.Errorf("file is not MP4, magic bytes are %v", magicBytes)
 	}
 
 	_, err = f.Seek(0, io.SeekStart)
@@ -180,17 +180,17 @@ type Path struct {
 	SourceOnDemandCloseAfter   Duration `json:"sourceOnDemandCloseAfter"`
 	MaxReaders                 int      `json:"maxReaders"`
 	SRTReadPassphrase          string   `json:"srtReadPassphrase"`
-	Fallback                   *string  `json:"fallback,omitempty"` // deprecated
+	Fallback                   *string  `json:"fallback,omitempty" deprecated:"true"`
 	UseAbsoluteTimestamp       bool     `json:"useAbsoluteTimestamp"`
 
 	// Always available
 	AlwaysAvailable       bool                   `json:"alwaysAvailable"`
-	AlwaysAvailableFile   string                 `json:"alwaysAvailableFile"`
 	AlwaysAvailableTracks []AlwaysAvailableTrack `json:"alwaysAvailableTracks"`
+	AlwaysAvailableFile   string                 `json:"alwaysAvailableFile"`
 
 	// Record
 	Record                bool         `json:"record"`
-	Playback              *bool        `json:"playback,omitempty"` // deprecated
+	Playback              *bool        `json:"playback,omitempty" deprecated:"true"`
 	RecordPath            string       `json:"recordPath"`
 	RecordFormat          RecordFormat `json:"recordFormat"`
 	RecordPartDuration    Duration     `json:"recordPartDuration"`
@@ -199,34 +199,35 @@ type Path struct {
 	RecordDeleteAfter     Duration     `json:"recordDeleteAfter"`
 
 	// Authentication (deprecated)
-	PublishUser *Credential `json:"publishUser,omitempty"` // deprecated
-	PublishPass *Credential `json:"publishPass,omitempty"` // deprecated
-	PublishIPs  *IPNetworks `json:"publishIPs,omitempty"`  // deprecated
-	ReadUser    *Credential `json:"readUser,omitempty"`    // deprecated
-	ReadPass    *Credential `json:"readPass,omitempty"`    // deprecated
-	ReadIPs     *IPNetworks `json:"readIPs,omitempty"`     // deprecated
+	PublishUser *Credential `json:"publishUser,omitempty" deprecated:"true"`
+	PublishPass *Credential `json:"publishPass,omitempty" deprecated:"true"`
+	PublishIPs  *IPNetworks `json:"publishIPs,omitempty" deprecated:"true"`
+	ReadUser    *Credential `json:"readUser,omitempty" deprecated:"true"`
+	ReadPass    *Credential `json:"readPass,omitempty" deprecated:"true"`
+	ReadIPs     *IPNetworks `json:"readIPs,omitempty" deprecated:"true"`
 
 	// Publisher source
 	OverridePublisher        bool   `json:"overridePublisher"`
-	DisablePublisherOverride *bool  `json:"disablePublisherOverride,omitempty"` // deprecated
+	DisablePublisherOverride *bool  `json:"disablePublisherOverride,omitempty" deprecated:"true"`
 	SRTPublishPassphrase     string `json:"srtPublishPassphrase"`
+	RTSPDemuxMpegts          bool   `json:"rtspDemuxMpegts"`
 
 	// RTSP source
 	RTSPTransport          RTSPTransport  `json:"rtspTransport"`
 	RTSPAnyPort            bool           `json:"rtspAnyPort"`
-	SourceProtocol         *RTSPTransport `json:"sourceProtocol,omitempty"`      // deprecated
-	SourceAnyPortEnable    *bool          `json:"sourceAnyPortEnable,omitempty"` // deprecated
+	SourceProtocol         *RTSPTransport `json:"sourceProtocol,omitempty" deprecated:"true"`
+	SourceAnyPortEnable    *bool          `json:"sourceAnyPortEnable,omitempty" deprecated:"true"`
 	RTSPRangeType          RTSPRangeType  `json:"rtspRangeType"`
 	RTSPRangeStart         string         `json:"rtspRangeStart"`
-	RTSPUDPReadBufferSize  *uint          `json:"rtspUDPReadBufferSize,omitempty"` // deprecated
+	RTSPUDPReadBufferSize  *uint          `json:"rtspUDPReadBufferSize,omitempty" deprecated:"true"`
 	RTSPUDPSourcePortRange []uint         `json:"rtspUDPSourcePortRange"`
 
 	// MPEG-TS source
-	MPEGTSUDPReadBufferSize *uint `json:"mpegtsUDPReadBufferSize,omitempty"` // deprecated
+	MPEGTSUDPReadBufferSize *uint `json:"mpegtsUDPReadBufferSize,omitempty" deprecated:"true"`
 
 	// RTP source
 	RTPSDP               string `json:"rtpSDP"`
-	RTPUDPReadBufferSize *uint  `json:"rtpUDPReadBufferSize,omitempty"` // deprecated
+	RTPUDPReadBufferSize *uint  `json:"rtpUDPReadBufferSize,omitempty" deprecated:"true"`
 
 	// WHEP source
 	WHEPBearerToken        string   `json:"whepBearerToken"`
@@ -272,13 +273,13 @@ type Path struct {
 	RPICameraCodec                 string    `json:"rpiCameraCodec"`
 	RPICameraIDRPeriod             uint      `json:"rpiCameraIDRPeriod"`
 	RPICameraBitrate               uint      `json:"rpiCameraBitrate"`
-	RPICameraProfile               *string   `json:"rpiCameraProfile,omitempty"` // deprecated
-	RPICameraLevel                 *string   `json:"rpiCameraLevel,omitempty"`   // deprecated
+	RPICameraProfile               *string   `json:"rpiCameraProfile,omitempty" deprecated:"true"`
+	RPICameraLevel                 *string   `json:"rpiCameraLevel,omitempty" deprecated:"true"`
 	RPICameraHardwareH264Profile   string    `json:"rpiCameraHardwareH264Profile"`
 	RPICameraHardwareH264Level     string    `json:"rpiCameraHardwareH264Level"`
 	RPICameraSoftwareH264Profile   string    `json:"rpiCameraSoftwareH264Profile"`
 	RPICameraSoftwareH264Level     string    `json:"rpiCameraSoftwareH264Level"`
-	RPICameraJPEGQuality           *uint     `json:"rpiCameraJPEGQuality,omitempty"` // deprecated
+	RPICameraJPEGQuality           *uint     `json:"rpiCameraJPEGQuality,omitempty" deprecated:"true"`
 	RPICameraMJPEGQuality          uint      `json:"rpiCameraMJPEGQuality"`
 	RPICameraPrimaryName           string    `json:"-"` // filled by Validate()
 	RPICameraSecondaryWidth        uint      `json:"-"` // filled by Validate()
@@ -309,11 +310,6 @@ func (pconf *Path) setDefaults() {
 	pconf.Source = "publisher"
 	pconf.SourceOnDemandStartTimeout = 10 * Duration(time.Second)
 	pconf.SourceOnDemandCloseAfter = 10 * Duration(time.Second)
-
-	// Always available
-	pconf.AlwaysAvailableTracks = []AlwaysAvailableTrack{
-		{Codec: "H264"},
-	}
 
 	// Record
 	pconf.RecordPath = "./recordings/%path/%Y-%m-%d_%H-%M-%S-%f"
@@ -734,6 +730,10 @@ func (pconf *Path) validate(
 		}
 
 		if pconf.AlwaysAvailableFile != "" {
+			if len(pconf.AlwaysAvailableTracks) != 0 {
+				return fmt.Errorf("'alwaysAvailableFile' and 'alwaysAvailableTracks' cannot be used together")
+			}
+
 			err := checkAlwaysAvailableFile(pconf.AlwaysAvailableFile)
 			if err != nil {
 				return fmt.Errorf("invalid 'alwaysAvailableFile': %w", err)
